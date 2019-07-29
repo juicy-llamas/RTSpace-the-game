@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <title>FUCK</title>
+        <meta charset="UTF-8"></meta>
+        <style>
+            body {
+                margin: 0;
+            }
+            canvas {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="js/thre/three.min.js"></script>
+		<script>
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+			var line_coords = new THREE.Float32BufferAttribute( [ 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1 ], 3 );
+			line_coords.dynamic = true;
+			var line = new THREE.LineLoop( new THREE.BufferGeometry().addAttribute( 'position', line_coords ), new THREE.LineBasicMaterial( { color: 0x6688FF, linewidth: 1 } ) );
+			var renderer = new THREE.WebGLRenderer();
+			var mouse_raycast = new THREE.Raycaster();
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var plane = new THREE.Plane( THREE.Object3D.DefaultUp );
+
+			camera.position.y = 20;
+			camera.lookAt( 0, -1, 0 );
+
+			var animate = function () {
+
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+
+			};
+
+			animate();
+
+			var drag_on_mouse_move = function ( event ) {
+
+				var mouse_coords = new THREE.Vector2( event.clientX / window.innerWidth * 2 - 1, -( event.clientY / window.innerHeight * 2 - 1 ) );
+				var vector = new THREE.Vector3();
+
+				mouse_raycast.setFromCamera( mouse_coords, camera );
+
+				mouse_raycast.ray.intersectPlane( plane, vector );
+
+				var x = vector.x;
+				var y = vector.z;
+				var store = line_coords.array;
+
+				store[ 3 ] = x;
+				store[ 6 ] = x;
+				store[ 8 ] = y;
+				store[ 11 ] = y;
+
+				line_coords.needsUpdate = true;
+
+			}
+
+			var mouse_click = function ( event ) {
+			
+				var mouse_coords = new THREE.Vector2( event.clientX / window.innerWidth * 2 - 1, -( event.clientY / window.innerHeight * 2 - 1 ) );
+				var vector = new THREE.Vector3();
+
+				mouse_raycast.setFromCamera( mouse_coords, camera );
+
+				mouse_raycast.ray.intersectPlane( plane, vector );
+
+				var x = vector.x;
+				var y = vector.z;
+
+				renderer.domElement.addEventListener( 'mousemove', drag_on_mouse_move );
+
+				console.log( "yee" );
+
+				var store = line_coords.array;
+
+				store[ 0 ] = x;
+				store[ 2 ] = y;
+				store[ 3 ] = x;
+				store[ 5 ] = y;
+				store[ 6 ] = x;
+				store[ 8 ] = y;
+				store[ 9 ] = x;
+				store[ 11 ] = y;
+
+				line_coords.needsUpdate = true;
+
+				scene.add( line );
+		
+			}
+
+			var mouse_up = function ( event ) {
+
+				renderer.domElement.removeEventListener( 'mousemove', drag_on_mouse_move );
+	
+				scene.remove( line );
+
+				console.log( "yaa" );
+	
+			}
+
+			renderer.domElement.addEventListener( 'mousedown', mouse_click );
+			renderer.domElement.addEventListener( 'mouseup', mouse_up );
+
+		</script>
+    </body>
+</html>
