@@ -1,5 +1,5 @@
 
-function EventHandlers() {	// a wrapper to keep event handler context isolated.
+var EventHandlers = ( () => {	// a wrapper to keep event handler context isolated.
 
 	var click_time = 400;
 	var mouse_raycast = new THREE.Raycaster();
@@ -7,10 +7,18 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 	var line_coords = new THREE.Float32BufferAttribute( [ 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1 ], 3 );
 	line_coords.dynamic = true;
 
-	this.drag_line_material = new THREE.LineBasicMaterial( { color: 0x6688FF, linewidth: 1 } );
-	var drag_line = new THREE.LineLoop( new THREE.BufferGeometry().addAttribute( 'position', line_coords ), this.drag_line_material);
-	drag_line.visible = false;
-	MAIN_scene.add( drag_line );
+	var drag_line;
+	
+	function EventHandlers() {
+
+		this.drag_line_material = new THREE.LineBasicMaterial( { color: 0x6688FF, linewidth: 1 } );
+	
+		drag_line = new THREE.LineLoop( new THREE.BufferGeometry().addAttribute( 'position', line_coords ), this.drag_line_material);
+		drag_line.visible = false;
+
+		MAIN_scene.add( drag_line );
+
+	}
 			
 	var keymap = {
 
@@ -280,7 +288,7 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 	}
 
-	this.enable_all = function () {
+	EventHandlers.prototype.enable_all = function () {
 
 		window.onresize = Mon_window_resize;
 		WebGL_renderer.domElement.addEventListener( "mousedown", Mmouse_down );
@@ -292,7 +300,7 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 	}
 
-	this.disable_all = function () {
+	EventHandlers.prototype.disable_all = function () {
 
 		window.onresize = null;
 		WebGL_renderer.domElement.removeEventListener( "mousedown", Mmouse_down );
@@ -304,15 +312,17 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 	}
 
-	this.change_keymap = function ( keys ) {
+	EventHandlers.prototype.change_keymap = function ( keys ) {
 
 		keymap = JSON.parse( JSON.stringify( keys ) );	//simple way to copy string objects
 
 	}
 
-	this.add_key_function = function ( key, func ) {
+	EventHandlers.prototype.add_key_function = function ( key, func ) {
 
 	}
+
+	return EventHandlers;
 
 /*
 
@@ -322,7 +332,7 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 				 \~~/
 				  \/
 
-	this.enable_parts = function ( events ) { // events is an array of strings
+	EventHandlers.prototype.enable_parts = function ( events ) { // events is an array of strings
 
 		for ( var i = 0; i < events.length; i++ ) {
 
@@ -332,7 +342,7 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 	}
 
-	this.disable_parts = function ( events ) { // events is an array of strings
+	EventHandlers.prototype.disable_parts = function ( events ) { // events is an array of strings
 
 		for ( var i = 0; i < events.length; i++ ) {
 
@@ -342,31 +352,31 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 	}
 
-	this.enable_part = function ( event ) { // please dont add in recursion
+	EventHandlers.prototype.enable_part = function ( event ) { // please dont add in recursion
 
 		WebGL_renderer.domElement.addEventListener( event, event_array[ event ] );
 
 	}
 
-	this.disable_part = function ( event ) { // please dont remove in recursion
+	EventHandlers.prototype.disable_part = function ( event ) { // please dont remove in recursion
 
 		WebGL_renderer.domElement.removeEventListener( event, event_array[ event ] );
 
 	}
 
-	this.add_event = function ( event, func ) { // events is an array of strings
+	EventHandlers.prototype.add_event = function ( event, func ) { // events is an array of strings
 
 		
 
 	}
 
-	this.change_event = function ( event, func ) { // events is an array of strings
+	EventHandlers.prototype.change_event = function ( event, func ) { // events is an array of strings
 
 		
 
 	}
 
-	this.remove_event = function ( event ) { // events is an array of strings
+	EventHandlers.prototype.remove_event = function ( event ) { // events is an array of strings
 
 		
 
@@ -374,6 +384,6 @@ function EventHandlers() {	// a wrapper to keep event handler context isolated.
 
 */
 
-}
+} )();
 
 

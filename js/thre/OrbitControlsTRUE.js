@@ -5,6 +5,10 @@
  * @author alteredq / http://alteredqualia.com/
  * @author WestLangley / http://github.com/WestLangley
  * @author erich666 / http://erichaines.com
+ *
+ * Mildly edited by yours truly, Llamas ( https://github.com/juicy-llamas )
+ *		- Removed the event listener attachments and made events fire manually in event_handlers.js
+ *
  */
 
 // This set of controls performs orbiting, dollying (zooming), and panning.

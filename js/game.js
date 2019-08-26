@@ -1,5 +1,5 @@
 
-// ALL GLOBALS GO HERE!
+// (almost) ALL GLOBALS GO HERE!
 
 var MAIN_scene, MAIN_camera, WebGL_renderer, orbit_controls, 
 
@@ -30,10 +30,10 @@ var players = [ {	// this will contain live player data and be updated
 
 } ];
 
-var fake_player = {
+var fake_player = {		// inanimate objects have a ghost player object for comparisons with 'real' player objects
 
 	name: "ye",
-	color: 0,
+	color: undefined,
 	status: undefined
 
 };
@@ -90,6 +90,7 @@ function Animate() {
 			
 		console.log( "FPS: " + FPS ); 
 		console.log( "Clock: " + clock ); 
+		console.log( "Clock 2: " + clock2 ); 
 
 	}
 
@@ -116,6 +117,17 @@ var set_up_camera = function () {
 	
 	MAIN_camera.rotation.set( 0, 0, 0 );
 	orbit_controls.update();
+
+}
+
+// GET RID OF THIS
+
+function Infinite_Grid() {
+
+ 	this.plane = new THREE.Plane( THREE.Object3D.DefaultUp );
+	this.hellp = new THREE.PlaneHelper( this.plane );
+
+	MAIN_scene.add( this.hellp );
 
 }
 
@@ -175,10 +187,10 @@ var init = function () {
 
 	meshes = new Meshes();
 
-	for ( var i = -6; i <= 6; i++ ) {
+	for ( var i = -6; i <= 6; i++ ) {		// BIG THING OF CUBEYS
 		for ( var k = -6; k <= 6; k++ ) {
 			if ( i === 0 && k === 0 ) continue;
-			var CUBEY = new Ship( new THREE.Vector3( i*24, 0, k*24 ), 0x00ff00, new THREE.Vector3( 0, 0, Math.PI ), players[ 0 ] );
+			var CUBEY = new Basic_Ship( new THREE.Vector3( i*24, 0, k*24 ), 0x00ff00, new THREE.Vector3( 0, 0, Math.PI ), players[ 0 ] );
 		}
 	}// var CUBEY = new Ship( new THREE.Vector3( 4, 0, 4 ), 0x00ff00, new THREE.Vector3( 0, 0, Math.PI ), players[ 0 ] );
 
